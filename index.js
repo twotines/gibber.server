@@ -493,17 +493,23 @@ app.locals.inspect = require('util').inspect;
 app.get( '/browser', function( req, res, next ) {
   var demos = {}
   request( designURI + '_view/demos', function(e,r,b) { 
-    var audio = [], visual = [], audiovisual = [], demoRows = JSON.parse( b ).rows
+    var b = b || '["", ""]';
+    var demoRows = JSON.parse( b ).rows;
+    var audio = [];
+    var visual = [];
+    var audiovisual = [];
 
-    for( var i =0; i < demoRows.length; i++ ) {
-      var cat, row = demoRows[ i ]
-      
-      cat = row.value.category || 'audiovisual'
-      
-      switch( cat ) {
-        case 'Visual': visual.push( row ); break;
-        case 'Audio' : audio.push(  row ); break;
-        default: audiovisual.push(  row ); break;
+    if (demoRows) {
+      for( var i =0; i < demoRows.length; i++ ) {
+        var cat, row = demoRows[ i ]
+        
+        cat = row.value.category || 'audiovisual'
+        
+        switch( cat ) {
+          case 'Visual': visual.push( row ); break;
+          case 'Audio' : audio.push(  row ); break;
+          default: audiovisual.push(  row ); break;
+        }
       }
     }
     
@@ -512,26 +518,32 @@ app.get( '/browser', function( req, res, next ) {
     request( { uri:designURI + '_view/recent?descending=true&limit=20', json: true }, 
       function(__e,__r,__b) {
         var recent = []
-        for( var i = 0; i < __b.rows.length; i++ ){
-          console.log( __b.rows[i] )
-          recent.push( __b.rows[i].value )
+        if (__b) {
+          for( var i = 0; i < __b.rows.length; i++ ){
+            console.log( __b.rows[i] )
+            recent.push( __b.rows[i].value )
+          }
         }
         request( designURI + '_view/tutorials', function(e,r,b) {
           // console.log( (JSON.parse(b)).rows )
-          var _audio = [], _3d = [], _2d = [], _misc=[], demoRows = JSON.parse( b ).rows
+          var b = b || '["", ""]';
+          var demoRows = JSON.parse( b ).rows
+          var _audio = [], _3d = [], _2d = [], _misc=[], demoRows
 
+          if (demoRows) {
             for( var i =0; i < demoRows.length; i++ ) {
-            var cat = 'misc', row = demoRows[ i ]
-            //console.log( row )
-            if( row.key.split('*').length > 0 ) {
-              cat = row.key.split('*')[1]
-              switch( cat ) {
-                case '2d' :
-                  _2d.push( row ); break;
-                case '3d' : _3d.push( row ); break;
-                case 'audio' : _audio.push( row ); break;
-                default:
-                  _misc.push( row ); break;
+              var cat = 'misc', row = demoRows[ i ]
+              //console.log( row )
+              if( row.key.split('*').length > 0 ) {
+                cat = row.key.split('*')[1]
+                switch( cat ) {
+                  case '2d' :
+                    _2d.push( row ); break;
+                  case '3d' : _3d.push( row ); break;
+                  case 'audio' : _audio.push( row ); break;
+                  default:
+                    _misc.push( row ); break;
+                }
               }
             }
           }
