@@ -19,6 +19,6 @@ To run the server, go to the top level of the Gibber repo that you installed `gi
 
 You can substitute a port of your choice for `8080` in the above line. Now, if everything turns out OK, you can open `127.0.0.1:8080` in a browser and Gibber will be running.
 
-If you get `Error: Cannot find module 'nanotimer'` , run `npm install nanotimer`
+If you get `Error: Cannot find module 'nanotimer'` , run `npm install nanotimer`, or `npm install nanotimer --no-optional`
 
 Note to self:ejs must be version 0.8.4... using ~0.8.4 will mess things up.
