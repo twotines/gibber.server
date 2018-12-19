@@ -8,6 +8,7 @@
     "connect": "~2.9.0",
     "express": "~3.4.0",
     "passport": "~0.1.17",
+    "nanotimer": "0.3.15",
     "passport-local": "~0.1.6",
     "share": "0.7.3",
     "request": "~2.27.0",
